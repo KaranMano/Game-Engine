@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
+# options
+option(DEBUG "Enable debug mode" OFF)
+
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
@@ -27,11 +30,20 @@ else()
 	add_executable(${EXECUTABLE_NAME})
 endif()
 
+# Configuration file
+configure_file(${CMAKE_SOURCE_DIR}/src/cmake.hpp.in cmake.hpp)
+
 # Add your sources to the target
+file( GLOB_RECURSE SOURCE_FILES src/* )
 target_sources(${EXECUTABLE_NAME} 
 PRIVATE 
-    src/main.cpp
+	${SOURCE_FILES}
 )
+target_include_directories( ${EXECUTABLE_NAME}
+	PRIVATE ${CMAKE_SOURCE_DIR}/src/
+    PUBLIC ${CMAKE_BINARY_DIR}/
+)
+
 # What is iosLaunchScreen.storyboard? This file describes what Apple's mobile platforms
 # should show the user while the application is starting up. If you don't include one,
 # then you get placed in a compatibility mode that does not allow HighDPI.
