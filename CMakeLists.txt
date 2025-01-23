@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-# options
 option(DEBUG "Enable debug mode" OFF)
 
 # set the output directory for built objects.
@@ -18,7 +17,6 @@ if (APPLE OR EMSCRIPTEN)
     set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")    # Disable shared builds on platforms where it does not make sense to use them
 endif()
 
-# Set the name of the executable
 set(EXECUTABLE_NAME ${PROJECT_NAME})
 
 # Create an executable or a shared library based on the platform and add our sources to it
@@ -34,7 +32,6 @@ endif()
 configure_file(${CMAKE_SOURCE_DIR}/src/cmake.hpp.in cmake.hpp)
 configure_file(${CMAKE_SOURCE_DIR}/.editorconfig .editorconfig COPYONLY)
 
-# Add your sources to the target
 file( GLOB_RECURSE SOURCE_FILES src/* )
 target_sources(${EXECUTABLE_NAME} 
 PRIVATE 
@@ -44,6 +41,9 @@ target_include_directories( ${EXECUTABLE_NAME}
 	PRIVATE ${CMAKE_SOURCE_DIR}/src/
     PUBLIC ${CMAKE_BINARY_DIR}/
 )
+
+# glm
+add_subdirectory( external/glm )
 
 # What is iosLaunchScreen.storyboard? This file describes what Apple's mobile platforms
 # should show the user while the application is starting up. If you don't include one,
@@ -57,7 +57,6 @@ if(APPLE)
     target_sources("${EXECUTABLE_NAME}" PRIVATE "src/logo.png")
 endif()
 
-# Set C++ version
 target_compile_features(${EXECUTABLE_NAME} PUBLIC cxx_std_20)
 
 # on Web targets, we need CMake to generate a HTML webpage. 
@@ -65,16 +64,13 @@ if(EMSCRIPTEN)
 	set(CMAKE_EXECUTABLE_SUFFIX ".html" CACHE INTERNAL "")
 endif()
 
-# Configure SDL by calling its CMake file.
 # we use EXCLUDE_FROM_ALL so that its install targets and configs don't
 # pollute upwards into our configuration.
 add_subdirectory(external/SDL EXCLUDE_FROM_ALL)
 
-# If you don't want SDL_ttf, then remove this section.
 set(SDLTTF_VENDORED ON) # tell SDL_ttf to build its own dependencies
 add_subdirectory(external/SDL_ttf EXCLUDE_FROM_ALL)	
 
-# SDL_mixer (used for playing audio)
 set(SDLMIXER_MIDI_NATIVE OFF)     # disable formats we don't use to make the build faster and smaller. Also some of these don't work on all platforms so you'll need to do some experimentation.
 set(SDLMIXER_GME OFF)
 set(SDLMIXER_WAVPACK OFF)     
@@ -83,11 +79,11 @@ set(SDLMIXER_OPUS OFF)
 set(SDLMIXER_VENDORED ON)   # tell SDL_mixer to build its own dependencies
 add_subdirectory(external/SDL_mixer EXCLUDE_FROM_ALL)
 
-# Link SDL to our executable. This also makes its include directory available to us. 
 target_link_libraries(${EXECUTABLE_NAME} PUBLIC 
 	SDL3::SDL3
 	SDL3_ttf::SDL3_ttf      # remove if you are not using SDL_ttf
-        SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
+    SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
+    glm
 )
 target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 

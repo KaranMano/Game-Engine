@@ -15,6 +15,8 @@
 #include <physics/physics-engine.hpp>
 #include <audio/audio-engine.hpp>
 
+#include <glm/common.hpp>
+
 // Engine wraps Game and shows UI to edit state of Game 
 // On Game build only Game remains
 // Nodes, Memory etc. with the flow
