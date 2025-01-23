@@ -32,6 +32,7 @@ endif()
 
 # Configuration file
 configure_file(${CMAKE_SOURCE_DIR}/src/cmake.hpp.in cmake.hpp)
+configure_file(${CMAKE_SOURCE_DIR}/.editorconfig .editorconfig COPYONLY)
 
 # Add your sources to the target
 file( GLOB_RECURSE SOURCE_FILES src/* )
