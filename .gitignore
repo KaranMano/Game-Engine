@@ -1,5 +1,9 @@
-.DS_Store
-build/
-.vs/
-out/
+# IDE files/folders
 .vscode/
+.vs/
+
+# Build
+[Oo]ut/
+[Bb]uild/
+
+.DS_Store
