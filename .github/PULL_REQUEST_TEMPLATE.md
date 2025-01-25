@@ -3,5 +3,8 @@
 ## Description
 <!--- Describe your changes in detail -->
 
-## Existing Issue(s)
-<!--- If it fixes an open issue, please link to the issue here. -->
+## Changes
+<!--- List the changes made in this PR -->
+
+## Tests
+<!--- Please describe in detail how you tested your changes. -->

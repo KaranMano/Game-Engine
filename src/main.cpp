@@ -5,6 +5,8 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3/SDL_assert.h>
 
+#include <glm/common.hpp>
+
 #include <cmath>
 #include <string_view>
 #include <filesystem>
@@ -14,8 +16,7 @@
 #include <renderer/renderer.hpp>
 #include <physics/physics-engine.hpp>
 #include <audio/audio-engine.hpp>
-
-#include <glm/common.hpp>
+#include <logging/log.hpp>
 
 // Engine wraps Game and shows UI to edit state of Game 
 // On Game build only Game remains
@@ -31,7 +32,7 @@ struct AppContext {
 };
 
 SDL_AppResult SDL_Fail(){
-    SDL_LogError(SDL_LOG_CATEGORY_CUSTOM, "Error %s", SDL_GetError());
+    Log(LogLevel::Error, "Error %s", SDL_GetError());
     return SDL_APP_FAILURE;
 }
 
@@ -55,10 +56,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         int width, height, bbwidth, bbheight;
         SDL_GetWindowSize(window, &width, &height);
         SDL_GetWindowSizeInPixels(window, &bbwidth, &bbheight);
-        SDL_Log("Window size: %ix%i", width, height);
-        SDL_Log("Backbuffer size: %ix%i", bbwidth, bbheight);
+        Log(LogLevel::Info, "Window size: %ix%i", width, height);
+        Log(LogLevel::Info, "Backbuffer size: %ix%i", bbwidth, bbheight);
         if (width != bbwidth){
-            SDL_Log("This is a highdpi environment.");
+            Log(LogLevel::Info, "This is a highdpi environment.");
         }
     }
 
@@ -75,7 +76,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         .engine = engine,
     };
     
-    SDL_Log("Application started successfully!");
+    Log(LogLevel::Info, "Application started successfully!");
 
     return SDL_APP_CONTINUE;
 }
@@ -107,6 +108,6 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     }
     TTF_Quit();
 
-    SDL_Log("Application quit successfully!");
+    Log(LogLevel::Info, "Application quit successfully!");
     SDL_Quit();
 }
