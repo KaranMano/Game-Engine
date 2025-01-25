@@ -16,7 +16,7 @@ enum class LogLevel {
  * @param filename Path to the log file
  * @param enable True to enable file logging, False to disable
  */
-void LogToFile(const std::string& filename, bool enable);
+void enableFileLogging(const std::string& filename, bool enable);
 
 /**
  * @brief Log a formatted message with the specified level
@@ -24,4 +24,4 @@ void LogToFile(const std::string& filename, bool enable);
  * @param fmt Printf-style format string
  * @param ... Variable arguments for format string
  */
-void Log(LogLevel level, const char* fmt, ...);
+void logger(LogLevel level, const char* fmt, ...);
