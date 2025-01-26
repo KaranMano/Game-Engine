@@ -31,13 +31,12 @@ struct AppContext {
     SDL_AppResult app_status = SDL_APP_CONTINUE;
 };
 
-SDL_AppResult SDL_fail(){
-    logger(LogLevel::Error, "Error %s", SDL_GetError());
+SDL_AppResult SDL_fail() {
+    LOG_ERROR("Error %s", SDL_GetError());
     return SDL_APP_FAILURE;
 }
 
 SDL_AppResult SDL_AppInit(void** app_state, int argc, char* argv[]) {
-    enableFileLogging("log.txt", true);
     if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)){
         return SDL_fail();
     }
@@ -57,10 +56,10 @@ SDL_AppResult SDL_AppInit(void** app_state, int argc, char* argv[]) {
         int width, height, bb_width, bb_height;
         SDL_GetWindowSize(window, &width, &height);
         SDL_GetWindowSizeInPixels(window, &bb_width, &bb_height);
-        logger(LogLevel::Info, "Window size: %ix%i", width, height);
-        logger(LogLevel::Info, "Backbuffer size: %ix%i", bb_width, bb_height);
+        LOG_INFO("Window size: %ix%i", width, height);
+        LOG_INFO("Backbuffer size: %ix%i", bb_width, bb_height);
         if (width != bb_width){
-            logger(LogLevel::Info, "This is a highdpi environment.");
+            LOG_INFO("This is a highdpi environment.");
         }
     }
 
@@ -77,7 +76,7 @@ SDL_AppResult SDL_AppInit(void** app_state, int argc, char* argv[]) {
         .engine = engine,
     };
     
-    logger(LogLevel::Info, "Application started successfully!");
+    LOG_INFO("Application started successfully!");
 
     return SDL_APP_CONTINUE;
 }
@@ -109,6 +108,6 @@ void SDL_AppQuit(void* app_state, SDL_AppResult result) {
     }
     TTF_Quit();
 
-    logger(LogLevel::Info, "Application quit successfully!");
+    LOG_INFO("Application quit successfully!");
     SDL_Quit();
 }

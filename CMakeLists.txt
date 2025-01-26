@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-option(DEBUG "Enable debug mode" OFF)
+option(DEBUG "Enable debug mode" ON)
 
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
