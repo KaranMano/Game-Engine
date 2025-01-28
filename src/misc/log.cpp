@@ -57,6 +57,8 @@ namespace util {
     }
 
     void log(LogLevel level, const char* fmt, ...) {
+        std::lock_guard<std::mutex> lock(log_mutex);
+
         va_list args;
         va_start(args, fmt);
 
@@ -82,10 +84,7 @@ namespace util {
             message_buffer
         );
 
-        
-
         if (log_to_file && log_file) {
-            std::lock_guard<std::mutex> lock(log_mutex);
             fprintf(log_file, "[%s] %s%s\n", getTimeStamp(), getLogPrefix(level), message_buffer);
             fflush(log_file);
         }

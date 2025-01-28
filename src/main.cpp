@@ -30,23 +30,23 @@ struct AppContext {
     SDL_AppResult app_status = SDL_APP_CONTINUE;
 };
 
-SDL_AppResult SDL_fail() {
+SDL_AppResult SDL_Fail() {
     LOG_ERROR("Error %s", SDL_GetError());
     return SDL_APP_FAILURE;
 }
 
 SDL_AppResult SDL_AppInit(void** app_state, int argc, char* argv[]) {
     if (not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)){
-        return SDL_fail();
+        return SDL_Fail();
     }
     
     if (not TTF_Init()) {
-        return SDL_fail();
+        return SDL_Fail();
     }
     
     SDL_Window* window = SDL_CreateWindow("Window", 352, 430, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (not window) {
-        return SDL_fail();
+        return SDL_Fail();
     }
     
     // print some information about the window
