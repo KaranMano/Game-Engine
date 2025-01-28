@@ -70,8 +70,16 @@ endif()
 # pollute upwards into our configuration.
 add_subdirectory(external/SDL EXCLUDE_FROM_ALL)
 
+set(SDLIMAGE_VENDORED OFF)
+add_subdirectory(external/SDL_image EXCLUDE_FROM_ALL)
+
+# If you don't want SDL_ttf, then remove this section.
 set(SDLTTF_VENDORED ON) # tell SDL_ttf to build its own dependencies
 add_subdirectory(external/SDL_ttf EXCLUDE_FROM_ALL)	
+# option(RMLUI_SAMPLES "" ON)
+# set(RMLUI_BACKEND "SDL_SDLrenderer")
+add_subdirectory(external/RmlUi EXCLUDE_FROM_ALL)
+
 
 set(SDLMIXER_MIDI_NATIVE OFF)     # disable formats we don't use to make the build faster and smaller. Also some of these don't work on all platforms so you'll need to do some experimentation.
 set(SDLMIXER_GME OFF)
@@ -84,8 +92,11 @@ add_subdirectory(external/SDL_mixer EXCLUDE_FROM_ALL)
 target_link_libraries(${EXECUTABLE_NAME} PUBLIC 
 	SDL3::SDL3
 	SDL3_ttf::SDL3_ttf      # remove if you are not using SDL_ttf
-    SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
-    glm
+	SDL3_mixer::SDL3_mixer  # remove if you are not using SDL_mixer
+	glm
+        RmlUi::RmlUi
+	RmlUi::Debugger
+        SDL3_image::SDL3_image
 )
 target_compile_definitions(${EXECUTABLE_NAME} PUBLIC SDL_MAIN_USE_CALLBACKS)
 
@@ -143,6 +154,12 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
     XCODE_ATTRIBUTE_BUNDLE_IDENTIFIER "com.ravbug.sdl3-sample"
 	XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.ravbug.sdl3-sample"
 	XCODE_ATTRIBUTE_CURRENTYEAR "${CURRENTYEAR}"
+    
+    # Clang tidy configuration for visual studio
+    VS_GLOBAL_RunCodeAnalysis false
+    VS_GLOBAL_EnableMicrosoftCodeAnalysis false
+    VS_GLOBAL_EnableClangTidyCodeAnalysis true
+    VS_GLOBAL_ClangTidyChecks "-* \"\"--config-file=${CMAKE_SOURCE_DIR}/.clang-tidy --header-filter=.*" 
 )
 
 # on Visual Studio, set our app as the default project
