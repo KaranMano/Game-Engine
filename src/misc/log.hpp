@@ -16,7 +16,7 @@ namespace util {
 } // namespace util
 
 // Debug builds
-#ifdef DEBUG
+#ifdef GAME_ENGINE_DEBUG_MODE
     #define LOG_TRACE(...)          util::log(util::LogLevel::Trace, __VA_ARGS__)
     #define LOG_DEBUG(...)          util::log(util::LogLevel::Debug, __VA_ARGS__)
     #define LOG_INFO(...)           util::log(util::LogLevel::Info, __VA_ARGS__)

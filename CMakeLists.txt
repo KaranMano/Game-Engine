@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-option(DEBUG "Enable debug mode" ON)
+option(GAME_ENGINE_DEBUG_MODE "Enable debug mode" ON)
 
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
@@ -29,7 +29,6 @@ else()
 endif()
 
 # Configuration file
-configure_file(${CMAKE_SOURCE_DIR}/src/cmake.hpp.in cmake.hpp)
 configure_file(${CMAKE_SOURCE_DIR}/.editorconfig .editorconfig COPYONLY)
 
 file( GLOB_RECURSE SOURCE_FILES src/* )
@@ -40,6 +39,9 @@ PRIVATE
 target_include_directories( ${EXECUTABLE_NAME}
 	PRIVATE ${CMAKE_SOURCE_DIR}/src/
     PUBLIC ${CMAKE_BINARY_DIR}/
+)
+target_compile_definitions( ${EXECUTABLE_NAME}
+	PRIVATE GAME_ENGINE_DEBUG_MODE
 )
 
 # glm
